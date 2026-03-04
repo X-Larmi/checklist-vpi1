@@ -11,7 +11,14 @@ interface ChecklistItem {
   id: string;
   text: string;
   completed: boolean;
+  hasInput?: boolean;
+  inputValue?: string;
+  inputPlaceholder?: string;
 }
+
+const ITEMS_WITH_INPUT: Record<string, string> = {
+  "Adresse IP d'administration du switch": "Ex: 192.168.1.1",
+};
 
 interface ChecklistCategory {
   id: string;
@@ -32,7 +39,14 @@ const Checklist = () => {
     return projectType.categories.map((cat) => ({
       id: generateId(),
       name: cat.name,
-      items: cat.items.map((text) => ({ id: generateId(), text, completed: false })),
+      items: cat.items.map((text) => ({
+        id: generateId(),
+        text,
+        completed: false,
+        hasInput: !!ITEMS_WITH_INPUT[text],
+        inputValue: "",
+        inputPlaceholder: ITEMS_WITH_INPUT[text] || "",
+      })),
     }));
   });
   const [newItemText, setNewItemText] = useState<Record<string, string>>({});
@@ -56,6 +70,16 @@ const Checklist = () => {
       prev.map((cat) =>
         cat.id === categoryId
           ? { ...cat, items: cat.items.map((item) => item.id === itemId ? { ...item, completed: !item.completed } : item) }
+          : cat
+      )
+    );
+  };
+
+  const updateItemInput = (categoryId: string, itemId: string, value: string) => {
+    setCategories((prev) =>
+      prev.map((cat) =>
+        cat.id === categoryId
+          ? { ...cat, items: cat.items.map((item) => item.id === itemId ? { ...item, inputValue: value } : item) }
           : cat
       )
     );
@@ -156,33 +180,45 @@ const Checklist = () => {
                 {category.items.map((item) => (
                   <div
                     key={item.id}
-                    className="group flex items-center gap-3 px-5 py-3 transition-colors hover:bg-secondary/50"
+                    className="group px-5 py-3 transition-colors hover:bg-secondary/50"
                   >
-                    <button
-                      onClick={() => toggleItem(category.id, item.id)}
-                      className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
-                        item.completed
-                          ? "border-success bg-success"
-                          : "border-muted-foreground/30 hover:border-primary"
-                      }`}
-                    >
-                      {item.completed && <Check className="h-3 w-3 text-success-foreground" />}
-                    </button>
-                    <span
-                      className={`flex-1 text-sm transition-all ${
-                        item.completed ? "text-muted-foreground line-through" : "text-foreground"
-                      }`}
-                    >
-                      {item.text}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive"
-                      onClick={() => removeItem(category.id, item.id)}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => toggleItem(category.id, item.id)}
+                        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
+                          item.completed
+                            ? "border-success bg-success"
+                            : "border-muted-foreground/30 hover:border-primary"
+                        }`}
+                      >
+                        {item.completed && <Check className="h-3 w-3 text-success-foreground" />}
+                      </button>
+                      <span
+                        className={`flex-1 text-sm transition-all ${
+                          item.completed ? "text-muted-foreground line-through" : "text-foreground"
+                        }`}
+                      >
+                        {item.text}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive"
+                        onClick={() => removeItem(category.id, item.id)}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                    {item.hasInput && item.completed && (
+                      <div className="mt-2 ml-8">
+                        <Input
+                          placeholder={item.inputPlaceholder}
+                          value={item.inputValue || ""}
+                          onChange={(e) => updateItemInput(category.id, item.id, e.target.value)}
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
