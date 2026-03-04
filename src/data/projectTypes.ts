@@ -19,40 +19,20 @@ export const projectTypes: ProjectTypeData[] = [
     color: "from-blue-500/20 to-cyan-500/20",
     categories: [
       {
-        name: "Cadrage",
+        name: "Checklist technique",
         items: [
-          "Recueillir les besoins client",
-          "Réaliser l'audit du réseau existant",
-          "Définir l'architecture cible",
-          "Établir le plan d'adressage IP",
-        ],
-      },
-      {
-        name: "Conception",
-        items: [
-          "Dimensionner les équipements",
-          "Définir le plan de VLANs",
-          "Concevoir le schéma réseau",
-          "Valider le choix du matériel",
-        ],
-      },
-      {
-        name: "Déploiement",
-        items: [
-          "Installer les switches",
-          "Configurer les VLANs",
-          "Configurer le spanning-tree",
-          "Mettre en place l'agrégation de liens",
-          "Configurer le routage inter-VLAN",
-        ],
-      },
-      {
-        name: "Validation",
-        items: [
-          "Tester la connectivité",
-          "Vérifier la redondance",
-          "Documenter la configuration",
-          "Former l'équipe technique",
+          "Récupération de la configuration du/des switch existants",
+          "Adresse IP d'administration du switch",
+          "ID VLAN d'administration (si cas échéant)",
+          "Config port d'accès (les VLANs) / Config ports d'interco",
+          "Mot de passe d'accès (si existant)",
+          "Nommage du switch",
+          "Alimentation ondulée ?",
+          "Serveur NTP interne ? Sinon ouvrir accès serveur NTP web",
+          "Supervision client (config du SNMP)",
+          "Si intervention sur l'infra complète, y a-t-il une fenêtre d'intervention prévue ?",
+          "Bouclage fibre/RJ/Radio existant ? Si oui, version de spanning-tree",
+          "Y a-t-il de la place disponible dans la baie ?",
         ],
       },
     ],
