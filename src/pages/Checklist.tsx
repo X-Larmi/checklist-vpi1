@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Plus, Trash2, Check, ArrowLeft, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
+
 import { projectTypes } from "@/data/projectTypes";
 import { icons } from "lucide-react";
 
@@ -50,11 +50,6 @@ const Checklist = () => {
   }
 
   const IconComponent = icons[projectType.icon as keyof typeof icons];
-  const totalItems = categories.reduce((sum, cat) => sum + cat.items.length, 0);
-  const completedItems = categories.reduce(
-    (sum, cat) => sum + cat.items.filter((i) => i.completed).length, 0
-  );
-  const progress = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
 
   const toggleItem = (categoryId: string, itemId: string) => {
     setCategories((prev) =>
@@ -132,19 +127,6 @@ const Checklist = () => {
           />
         </div>
 
-        {/* Progress */}
-        <div className="mb-10 rounded-xl border bg-card p-5">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-muted-foreground">Progression</span>
-            <span className="text-sm font-bold font-display">
-              {completedItems}/{totalItems} tâches
-            </span>
-          </div>
-          <Progress value={progress} className="h-2.5" />
-          <p className="mt-2 text-right text-xs text-muted-foreground">
-            {Math.round(progress)}% complété
-          </p>
-        </div>
 
         {/* Categories */}
         <div className="space-y-6">
