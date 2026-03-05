@@ -127,6 +127,16 @@ const Checklist = () => {
     );
   };
 
+  const updateItemMultiInput = (categoryId: string, itemId: string, key: string, value: string) => {
+    setCategories((prev) =>
+      prev.map((cat) =>
+        cat.id === categoryId
+          ? { ...cat, items: cat.items.map((item) => item.id === itemId ? { ...item, inputValues: { ...item.inputValues, [key]: value } } : item) }
+          : cat
+      )
+    );
+  
+
   const addItem = (categoryId: string) => {
     const text = newItemText[categoryId]?.trim();
     if (!text) return;
