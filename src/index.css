@@ -100,26 +100,65 @@
   }
 }
 
-/* PDF Export: hide action elements and force light theme */
-body.exporting-pdf .pdf-hide {
+/* PDF Export: hide action elements */
+body.exporting-pdf .pdf-hide,
+.exporting-pdf .pdf-hide {
   display: none !important;
 }
 
-body.exporting-pdf {
-  --background: 40 20% 97%;
-  --foreground: 220 20% 10%;
-  --card: 40 20% 99%;
-  --card-foreground: 220 20% 10%;
-  --primary: 220 60% 45%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 40 15% 92%;
-  --secondary-foreground: 220 20% 10%;
-  --muted: 40 10% 93%;
-  --muted-foreground: 220 10% 46%;
-  --border: 40 15% 88%;
-  --input: 40 15% 88%;
-  --success: 150 50% 40%;
-  --success-foreground: 0 0% 100%;
-  --warning: 38 92% 50%;
-  --warning-foreground: 0 0% 100%;
+@media print {
+  /* Hide UI-only elements */
+  .pdf-hide {
+    display: none !important;
+  }
+
+  /* Force light background and text colors */
+  :root {
+    --background: 40 20% 97% !important;
+    --foreground: 220 20% 10% !important;
+    --card: 40 20% 99% !important;
+    --card-foreground: 220 20% 10% !important;
+    --primary: 220 60% 45% !important;
+    --primary-foreground: 0 0% 100% !important;
+    --secondary: 40 15% 92% !important;
+    --secondary-foreground: 220 20% 10% !important;
+    --muted: 40 10% 93% !important;
+    --muted-foreground: 220 10% 46% !important;
+    --border: 40 15% 88% !important;
+    --input: 40 15% 88% !important;
+    --success: 150 50% 40% !important;
+    --success-foreground: 0 0% 100% !important;
+    --warning: 38 92% 50% !important;
+    --warning-foreground: 0 0% 100% !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FAF8F5 !important;
+  }
+
+  /* Page setup */
+  @page {
+    size: A4;
+    margin: 12mm 10mm;
+  }
+
+  /* Prevent elements from being cut across pages */
+  .rounded-xl {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Keep category cards together */
+  .divide-y > div {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Ensure borders and backgrounds print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
