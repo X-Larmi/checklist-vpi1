@@ -48,17 +48,6 @@ const EXISTING_CONFIG_CATEGORIES: Record<string, { name: string; items: string[]
         "Login / Mot de passe",
       ],
     },
-    {
-      name: "Autres informations",
-      items: [
-        "Alimentation ondulée",
-        "Serveur NTP",
-        "Supervision Client",
-        "Intervention sur l'infra en prod ?",
-        "Version Spanning-Tree",
-        "Place disponible dans la baie ?",
-      ],
-    },
   ],
 };
 
@@ -110,6 +99,14 @@ const Checklist = () => {
   const [tagIntercoModification, setTagIntercoModification] = useState<"yes" | "no" | null>(null);
   const [untagIntercoValue, setUntagIntercoValue] = useState("");
   const [tagIntercoValue, setTagIntercoValue] = useState("");
+  const [autresInfos, setAutresInfos] = useState([
+    { id: generateId(), text: "Alimentation ondulée", completed: false },
+    { id: generateId(), text: "Serveur NTP", completed: false },
+    { id: generateId(), text: "Supervision Client", completed: false },
+    { id: generateId(), text: "Intervention sur l'infra en prod ?", completed: false },
+    { id: generateId(), text: "Version Spanning-Tree", completed: false },
+    { id: generateId(), text: "Place disponible dans la baie ?", completed: false },
+  ]);
 
   if (!projectType) {
     return (
@@ -398,6 +395,40 @@ const Checklist = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* Autres informations */}
+        <div className="mt-6 rounded-xl border bg-card overflow-hidden">
+          <div className="border-b px-5 py-3.5">
+            <div className="flex items-center gap-2">
+              <GripVertical className="h-4 w-4 text-muted-foreground/40" />
+              <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
+                Autres informations
+              </h2>
+              <span className="ml-1 rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground">
+                {autresInfos.filter((i) => i.completed).length}/{autresInfos.length}
+              </span>
+            </div>
+          </div>
+          <div className="divide-y">
+            {autresInfos.map((item) => (
+              <div key={item.id} className="group px-5 py-3 transition-colors hover:bg-secondary/50">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setAutresInfos((prev) => prev.map((i) => i.id === item.id ? { ...i, completed: !i.completed } : i))}
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
+                      item.completed ? "border-success bg-success" : "border-muted-foreground/30 hover:border-primary"
+                    }`}
+                  >
+                    {item.completed && <Check className="h-3 w-3 text-success-foreground" />}
+                  </button>
+                  <span className={`flex-1 text-sm transition-all ${item.completed ? "text-muted-foreground" : "text-foreground"}`}>
+                    {item.text}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
