@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Plus, Trash2, Check, ArrowLeft, GripVertical } from "lucide-react";
+import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
