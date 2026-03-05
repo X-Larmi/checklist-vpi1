@@ -46,7 +46,6 @@ const EXISTING_CONFIG_CATEGORIES: Record<string, { name: string; items: string[]
       name: "Accès & Identification",
       items: [
         "Login / Mot de passe",
-        "Hostname",
       ],
     },
   ],
