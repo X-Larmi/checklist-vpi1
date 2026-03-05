@@ -112,6 +112,7 @@ const Checklist = () => {
   const [snmpVersion, setSnmpVersion] = useState<"v1" | "v2" | "v3" | null>(null);
   const [snmpCommunity, setSnmpCommunity] = useState("");
   const [snmpAccess, setSnmpAccess] = useState<"RO" | "RW" | null>(null);
+  const [spanningTreeVersion, setSpanningTreeVersion] = useState<string | null>(null);
 
   if (!projectType) {
     return (
@@ -494,8 +495,18 @@ const Checklist = () => {
               </div>
             ))}
 
+            {/* Version Spanning-Tree - boutons choix */}
+            <div className="px-5 py-3">
+              <p className="text-sm font-medium text-foreground mb-3">Version Spanning-Tree</p>
+              <div className="flex flex-wrap gap-2">
+                {["RSTP", "MSTP", "PVST / PVST+", "R PVST+"].map((v) => (
+                  <Button key={v} variant={spanningTreeVersion === v ? "default" : "outline"} size="sm" onClick={() => setSpanningTreeVersion(v)}>{v}</Button>
+                ))}
+              </div>
+            </div>
+
             {/* Remaining simple checkboxes */}
-            {autresInfos.filter(i => !["Alimentation ondulée", "Serveur NTP", "Supervision Client"].includes(i.text)).map((item) => (
+            {autresInfos.filter(i => !["Alimentation ondulée", "Serveur NTP", "Supervision Client", "Version Spanning-Tree"].includes(i.text)).map((item) => (
               <div key={item.id} className="group px-5 py-3 transition-colors hover:bg-secondary/50">
                 <div className="flex items-center gap-3">
                   <button
