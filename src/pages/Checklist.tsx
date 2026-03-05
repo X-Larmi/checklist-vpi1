@@ -114,6 +114,7 @@ const Checklist = () => {
   const [snmpAccess, setSnmpAccess] = useState<"RO" | "RW" | null>(null);
   const [spanningTreeVersion, setSpanningTreeVersion] = useState<string | null>(null);
   const [interventionProd, setInterventionProd] = useState<"yes" | "no" | null>(null);
+  const [placeDisponible, setPlaceDisponible] = useState<"yes" | "no" | null>(null);
 
   if (!projectType) {
     return (
@@ -515,24 +516,14 @@ const Checklist = () => {
               </div>
             </div>
 
-            {/* Remaining simple checkboxes */}
-            {autresInfos.filter(i => !["Alimentation ondulée", "Serveur NTP", "Supervision Client", "Version Spanning-Tree", "Intervention pendant la prod"].includes(i.text)).map((item) => (
-              <div key={item.id} className="group px-5 py-3 transition-colors hover:bg-secondary/50">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setAutresInfos((prev) => prev.map((i) => i.id === item.id ? { ...i, completed: !i.completed } : i))}
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
-                      item.completed ? "border-success bg-success" : "border-muted-foreground/30 hover:border-primary"
-                    }`}
-                  >
-                    {item.completed && <Check className="h-3 w-3 text-success-foreground" />}
-                  </button>
-                  <span className={`flex-1 text-sm transition-all ${item.completed ? "text-muted-foreground" : "text-foreground"}`}>
-                    {item.text}
-                  </span>
-                </div>
+            {/* Place disponible dans la baie - Oui/Non */}
+            <div className="px-5 py-3">
+              <p className="text-sm font-medium text-foreground mb-3">Place disponible dans la baie ?</p>
+              <div className="flex gap-2">
+                <Button variant={placeDisponible === "yes" ? "default" : "outline"} size="sm" onClick={() => setPlaceDisponible("yes")}>Oui</Button>
+                <Button variant={placeDisponible === "no" ? "default" : "outline"} size="sm" onClick={() => setPlaceDisponible("no")}>Non</Button>
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
