@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Plus, Trash2, Check, ArrowLeft, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,31 @@ interface ChecklistItem {
 }
 
 const ITEMS_WITH_INPUT: Record<string, string> = {
-  "Adresse IP d'administration du switch": "Ex: 192.168.1.1",
+  "ID pour le MGMT": "Ex: VLAN 10",
+  "Adresse IP et Masque": "Ex: 192.168.1.1 / 255.255.255.0",
+  "Passerelle": "Ex: 192.168.1.254",
+  "Login / Mot de passe": "Ex: admin / ••••••",
+  "Hostname": "Ex: SW-CORE-01",
+};
+
+const EXISTING_CONFIG_CATEGORIES: Record<string, { name: string; items: string[] }[]> = {
+  switching: [
+    {
+      name: "Informations IP",
+      items: [
+        "ID pour le MGMT",
+        "Adresse IP et Masque",
+        "Passerelle",
+      ],
+    },
+    {
+      name: "Accès & Identification",
+      items: [
+        "Login / Mot de passe",
+        "Hostname",
+      ],
+    },
+  ],
 };
 
 interface ChecklistCategory {
@@ -31,12 +55,20 @@ const generateId = () => Math.random().toString(36).substring(2, 9);
 const Checklist = () => {
   const { typeId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const configType = searchParams.get("config");
   const projectType = projectTypes.find((t) => t.id === typeId);
 
   const [projectName, setProjectName] = useState("");
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
-    return projectType.categories.map((cat) => ({
+
+    const sourceCategories =
+      configType === "existing" && typeId && EXISTING_CONFIG_CATEGORIES[typeId]
+        ? EXISTING_CONFIG_CATEGORIES[typeId]
+        : projectType.categories;
+
+    return sourceCategories.map((cat) => ({
       id: generateId(),
       name: cat.name,
       items: cat.items.map((text) => ({
