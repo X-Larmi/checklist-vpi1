@@ -67,6 +67,7 @@ const Checklist = () => {
   const projectType = projectTypes.find((t) => t.id === typeId);
 
   const [projectName, setProjectName] = useState("");
+  const [hostname, setHostname] = useState("");
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
 
