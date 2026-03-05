@@ -29,7 +29,7 @@ const SelectProject = () => {
             return (
               <button
                 key={type.id}
-                onClick={() => navigate(`/checklist/${type.id}`)}
+                onClick={() => navigate(`/config/${type.id}`)}
                 className="group relative overflow-hidden rounded-2xl border bg-card p-6 text-left transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 active:scale-[0.98]"
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${type.color} opacity-0 transition-opacity group-hover:opacity-100`} />
