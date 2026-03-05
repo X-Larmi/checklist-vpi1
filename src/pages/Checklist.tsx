@@ -234,6 +234,60 @@ const Checklist = () => {
           </div>
         </div>
 
+        {/* Informations de configuration */}
+        <div className="mb-6 rounded-xl border bg-card overflow-hidden">
+          <div className="border-b px-5 py-3.5">
+            <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
+              Informations de configuration
+            </h2>
+          </div>
+          <div className="px-5 py-4 space-y-4">
+            <div>
+              <p className="text-sm font-medium text-foreground mb-3">
+                Modification des tag/untag pour le projet ?
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant={tagModification === "yes" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setTagModification("yes")}
+                >
+                  Oui
+                </Button>
+                <Button
+                  variant={tagModification === "no" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setTagModification("no")}
+                >
+                  Non
+                </Button>
+              </div>
+            </div>
+            {tagModification === "yes" && (
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <label className="text-xs text-muted-foreground mb-1 block">UNTAG</label>
+                  <Input
+                    placeholder="Ex: VLAN 10"
+                    value={untagValue}
+                    onChange={(e) => setUntagValue(e.target.value)}
+                    className="h-9 text-sm"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="text-xs text-muted-foreground mb-1 block">TAG</label>
+                  <Input
+                    placeholder="Ex: VLAN 20, 30"
+                    value={tagValue}
+                    onChange={(e) => setTagValue(e.target.value)}
+                    className="h-9 text-sm"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
 
         {/* Categories */}
         <div className="space-y-6">
