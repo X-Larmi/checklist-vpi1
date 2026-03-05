@@ -203,7 +203,15 @@ const Checklist = () => {
           />
         </div>
 
-        {/* Informations Générales */}
+        {/* Avertissement */}
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-warning bg-warning/10 px-5 py-4">
+          <AlertTriangle className="h-5 w-5 shrink-0 text-warning mt-0.5" />
+          <p className="text-sm font-medium text-warning">
+            Assurez-vous bien d'avoir récupéré le(s) fichier(s) de configuration(s)
+          </p>
+        </div>
+
+
         <div className="mb-6 rounded-xl border bg-card overflow-hidden">
           <div className="border-b px-5 py-3.5">
             <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
