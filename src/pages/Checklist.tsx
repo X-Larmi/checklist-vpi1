@@ -228,7 +228,7 @@ const Checklist = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 py-12">
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-2xl" ref={contentRef}>
         {/* Back + Header */}
         <div className="mb-10">
           <Button
@@ -572,6 +572,14 @@ const Checklist = () => {
           <Button onClick={addCategory} className="h-10 shrink-0 rounded-xl gap-1.5">
             <Plus className="h-4 w-4" />
             Ajouter
+          </Button>
+        </div>
+
+        {/* Export PDF */}
+        <div className="mt-8 flex justify-center">
+          <Button onClick={exportPDF} className="gap-2 rounded-xl px-6">
+            <FileDown className="h-4 w-4" />
+            Export PDF
           </Button>
         </div>
       </div>
