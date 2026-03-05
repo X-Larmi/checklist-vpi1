@@ -86,6 +86,8 @@ const Checklist = () => {
         hasInput: !!ITEMS_WITH_INPUT[text],
         inputValue: "",
         inputPlaceholder: ITEMS_WITH_INPUT[text] || "",
+        multipleInputs: ITEMS_WITH_MULTIPLE_INPUTS[text] || undefined,
+        inputValues: ITEMS_WITH_MULTIPLE_INPUTS[text] ? {} : undefined,
       })),
     }));
   });
