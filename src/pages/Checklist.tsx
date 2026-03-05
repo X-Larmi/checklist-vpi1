@@ -107,6 +107,11 @@ const Checklist = () => {
     { id: generateId(), text: "Version Spanning-Tree", completed: false },
     { id: generateId(), text: "Place disponible dans la baie ?", completed: false },
   ]);
+  const [alimentationOndulée, setAlimentationOndulée] = useState<"yes" | "no" | null>(null);
+  const [ntpIp, setNtpIp] = useState("");
+  const [snmpVersion, setSnmpVersion] = useState<"v1" | "v2" | "v3" | null>(null);
+  const [snmpCommunity, setSnmpCommunity] = useState("");
+  const [snmpAccess, setSnmpAccess] = useState<"RO" | "RW" | null>(null);
 
   if (!projectType) {
     return (
@@ -406,13 +411,91 @@ const Checklist = () => {
               <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
                 Autres informations
               </h2>
-              <span className="ml-1 rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground">
-                {autresInfos.filter((i) => i.completed).length}/{autresInfos.length}
-              </span>
             </div>
           </div>
           <div className="divide-y">
-            {autresInfos.map((item) => (
+            {/* Alimentation ondulée - Oui/Non */}
+            <div className="px-5 py-3">
+              <p className="text-sm font-medium text-foreground mb-3">Alimentation ondulée ?</p>
+              <div className="flex gap-2">
+                <Button variant={alimentationOndulée === "yes" ? "default" : "outline"} size="sm" onClick={() => setAlimentationOndulée("yes")}>Oui</Button>
+                <Button variant={alimentationOndulée === "no" ? "default" : "outline"} size="sm" onClick={() => setAlimentationOndulée("no")}>Non</Button>
+              </div>
+            </div>
+
+            {/* Serveur NTP - checkbox + input IP */}
+            {autresInfos.filter(i => i.text === "Serveur NTP").map((item) => (
+              <div key={item.id} className="px-5 py-3">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setAutresInfos((prev) => prev.map((i) => i.id === item.id ? { ...i, completed: !i.completed } : i))}
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
+                      item.completed ? "border-success bg-success" : "border-muted-foreground/30 hover:border-primary"
+                    }`}
+                  >
+                    {item.completed && <Check className="h-3 w-3 text-success-foreground" />}
+                  </button>
+                  <span className={`flex-1 text-sm transition-all ${item.completed ? "text-muted-foreground" : "text-foreground"}`}>
+                    {item.text}
+                  </span>
+                </div>
+                {item.completed && (
+                  <div className="mt-2 ml-8">
+                    <label className="text-xs text-muted-foreground mb-1 block">Adresse IP du serveur NTP</label>
+                    <Input placeholder="Ex: 192.168.1.100" value={ntpIp} onChange={(e) => setNtpIp(e.target.value)} className="h-9 text-sm" />
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Supervision Client - checkbox + SNMP version choice */}
+            {autresInfos.filter(i => i.text === "Supervision Client").map((item) => (
+              <div key={item.id} className="px-5 py-3">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setAutresInfos((prev) => prev.map((i) => i.id === item.id ? { ...i, completed: !i.completed } : i))}
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
+                      item.completed ? "border-success bg-success" : "border-muted-foreground/30 hover:border-primary"
+                    }`}
+                  >
+                    {item.completed && <Check className="h-3 w-3 text-success-foreground" />}
+                  </button>
+                  <span className={`flex-1 text-sm transition-all ${item.completed ? "text-muted-foreground" : "text-foreground"}`}>
+                    {item.text}
+                  </span>
+                </div>
+                {item.completed && (
+                  <div className="mt-3 ml-8 space-y-3">
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-2 block">Version SNMP</label>
+                      <div className="flex gap-2">
+                        <Button variant={snmpVersion === "v1" ? "default" : "outline"} size="sm" onClick={() => setSnmpVersion("v1")}>SNMPv1</Button>
+                        <Button variant={snmpVersion === "v2" ? "default" : "outline"} size="sm" onClick={() => setSnmpVersion("v2")}>SNMPv2</Button>
+                        <Button variant={snmpVersion === "v3" ? "default" : "outline"} size="sm" onClick={() => setSnmpVersion("v3")}>SNMPv3</Button>
+                      </div>
+                    </div>
+                    {(snmpVersion === "v1" || snmpVersion === "v2") && (
+                      <>
+                        <div>
+                          <label className="text-xs text-muted-foreground mb-1 block">Nom de la communauté SNMP</label>
+                          <Input placeholder="Ex: public" value={snmpCommunity} onChange={(e) => setSnmpCommunity(e.target.value)} className="h-9 text-sm" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground mb-2 block">Type d'accès</label>
+                          <div className="flex gap-2">
+                            <Button variant={snmpAccess === "RO" ? "default" : "outline"} size="sm" onClick={() => setSnmpAccess("RO")}>RO</Button>
+                            <Button variant={snmpAccess === "RW" ? "default" : "outline"} size="sm" onClick={() => setSnmpAccess("RW")}>RW</Button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Remaining simple checkboxes */}
+            {autresInfos.filter(i => !["Alimentation ondulée", "Serveur NTP", "Supervision Client"].includes(i.text)).map((item) => (
               <div key={item.id} className="group px-5 py-3 transition-colors hover:bg-secondary/50">
                 <div className="flex items-center gap-3">
                   <button
