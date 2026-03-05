@@ -135,7 +135,7 @@ const Checklist = () => {
           : cat
       )
     );
-  
+  };
 
   const addItem = (categoryId: string) => {
     const text = newItemText[categoryId]?.trim();
