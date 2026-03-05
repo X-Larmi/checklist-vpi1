@@ -237,8 +237,8 @@ const Checklist = () => {
           </div>
         </div>
 
-
-
+        {/* Categories */}
+        <div className="space-y-6">
           {categories.map((category) => (
             <div key={category.id} className="rounded-xl border bg-card overflow-hidden">
               <div className="flex items-center justify-between border-b px-5 py-3.5">
