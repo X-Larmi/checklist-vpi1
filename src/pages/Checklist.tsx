@@ -93,6 +93,9 @@ const Checklist = () => {
   });
   const [newItemText, setNewItemText] = useState<Record<string, string>>({});
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [tagModification, setTagModification] = useState<"yes" | "no" | null>(null);
+  const [untagValue, setUntagValue] = useState("");
+  const [tagValue, setTagValue] = useState("");
 
   if (!projectType) {
     return (
