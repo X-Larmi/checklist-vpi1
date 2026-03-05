@@ -55,12 +55,20 @@ const generateId = () => Math.random().toString(36).substring(2, 9);
 const Checklist = () => {
   const { typeId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const configType = searchParams.get("config");
   const projectType = projectTypes.find((t) => t.id === typeId);
 
   const [projectName, setProjectName] = useState("");
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
-    return projectType.categories.map((cat) => ({
+
+    const sourceCategories =
+      configType === "existing" && typeId && EXISTING_CONFIG_CATEGORIES[typeId]
+        ? EXISTING_CONFIG_CATEGORIES[typeId]
+        : projectType.categories;
+
+    return sourceCategories.map((cat) => ({
       id: generateId(),
       name: cat.name,
       items: cat.items.map((text) => ({
