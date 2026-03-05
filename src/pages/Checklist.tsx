@@ -14,14 +14,22 @@ interface ChecklistItem {
   hasInput?: boolean;
   inputValue?: string;
   inputPlaceholder?: string;
+  multipleInputs?: { key: string; placeholder: string }[];
+  inputValues?: Record<string, string>;
 }
 
 const ITEMS_WITH_INPUT: Record<string, string> = {
   "ID pour le MGMT": "Ex: VLAN 10",
   "Adresse IP et Masque": "Ex: 192.168.1.1 / 255.255.255.0",
   "Passerelle": "Ex: 192.168.1.254",
-  "Login / Mot de passe": "Ex: admin / ••••••",
   "Hostname": "Ex: SW-CORE-01",
+};
+
+const ITEMS_WITH_MULTIPLE_INPUTS: Record<string, { key: string; placeholder: string }[]> = {
+  "Login / Mot de passe": [
+    { key: "login", placeholder: "Login" },
+    { key: "password", placeholder: "Mot de passe" },
+  ],
 };
 
 const EXISTING_CONFIG_CATEGORIES: Record<string, { name: string; items: string[] }[]> = {
@@ -78,6 +86,8 @@ const Checklist = () => {
         hasInput: !!ITEMS_WITH_INPUT[text],
         inputValue: "",
         inputPlaceholder: ITEMS_WITH_INPUT[text] || "",
+        multipleInputs: ITEMS_WITH_MULTIPLE_INPUTS[text] || undefined,
+        inputValues: ITEMS_WITH_MULTIPLE_INPUTS[text] ? {} : undefined,
       })),
     }));
   });
@@ -112,6 +122,16 @@ const Checklist = () => {
       prev.map((cat) =>
         cat.id === categoryId
           ? { ...cat, items: cat.items.map((item) => item.id === itemId ? { ...item, inputValue: value } : item) }
+          : cat
+      )
+    );
+  };
+
+  const updateItemMultiInput = (categoryId: string, itemId: string, key: string, value: string) => {
+    setCategories((prev) =>
+      prev.map((cat) =>
+        cat.id === categoryId
+          ? { ...cat, items: cat.items.map((item) => item.id === itemId ? { ...item, inputValues: { ...item.inputValues, [key]: value } } : item) }
           : cat
       )
     );
@@ -241,7 +261,7 @@ const Checklist = () => {
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     </div>
-                    {item.hasInput && item.completed && (
+                    {item.hasInput && item.completed && !item.multipleInputs && (
                       <div className="mt-2 ml-8">
                         <Input
                           placeholder={item.inputPlaceholder}
@@ -249,6 +269,19 @@ const Checklist = () => {
                           onChange={(e) => updateItemInput(category.id, item.id, e.target.value)}
                           className="h-8 text-sm"
                         />
+                      </div>
+                    )}
+                    {item.multipleInputs && item.completed && (
+                      <div className="mt-2 ml-8 flex gap-2">
+                        {item.multipleInputs.map((input) => (
+                          <Input
+                            key={input.key}
+                            placeholder={input.placeholder}
+                            value={item.inputValues?.[input.key] || ""}
+                            onChange={(e) => updateItemMultiInput(category.id, item.id, input.key, e.target.value)}
+                            className="h-8 text-sm"
+                          />
+                        ))}
                       </div>
                     )}
                   </div>
