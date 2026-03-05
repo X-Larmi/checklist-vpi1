@@ -113,6 +113,7 @@ const Checklist = () => {
   const [snmpCommunity, setSnmpCommunity] = useState("");
   const [snmpAccess, setSnmpAccess] = useState<"RO" | "RW" | null>(null);
   const [spanningTreeVersion, setSpanningTreeVersion] = useState<string | null>(null);
+  const [interventionProd, setInterventionProd] = useState<"yes" | "no" | null>(null);
 
   if (!projectType) {
     return (
