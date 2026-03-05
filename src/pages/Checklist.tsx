@@ -99,6 +99,14 @@ const Checklist = () => {
   const [tagIntercoModification, setTagIntercoModification] = useState<"yes" | "no" | null>(null);
   const [untagIntercoValue, setUntagIntercoValue] = useState("");
   const [tagIntercoValue, setTagIntercoValue] = useState("");
+  const [autresInfos, setAutresInfos] = useState([
+    { id: generateId(), text: "Alimentation ondulée", completed: false },
+    { id: generateId(), text: "Serveur NTP", completed: false },
+    { id: generateId(), text: "Supervision Client", completed: false },
+    { id: generateId(), text: "Intervention sur l'infra en prod ?", completed: false },
+    { id: generateId(), text: "Version Spanning-Tree", completed: false },
+    { id: generateId(), text: "Place disponible dans la baie ?", completed: false },
+  ]);
 
   if (!projectType) {
     return (
