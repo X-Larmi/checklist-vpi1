@@ -3,8 +3,6 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle, FileDown, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 import { projectTypes } from "@/data/projectTypes";
 import { icons } from "lucide-react";
@@ -197,55 +195,16 @@ const Checklist = () => {
     setCategories((prev) => prev.filter((cat) => cat.id !== categoryId));
   };
 
-  const exportPDF = async () => {
-    if (!contentRef.current || isExporting) return;
+  const exportPDF = () => {
+    if (isExporting) return;
     setIsExporting(true);
+    document.body.classList.add("exporting-pdf");
 
-    try {
-      document.body.classList.add("exporting-pdf");
-      await new Promise((r) => setTimeout(r, 300));
-
-      const element = contentRef.current;
-      const canvas = await html2canvas(element, {
-        scale: 3,
-        useCORS: true,
-        backgroundColor: "#FAF8F5",
-        logging: false,
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight,
-        scrollX: 0,
-        scrollY: 0,
-      });
-
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const margin = 8;
-      const imgWidth = pdfWidth - margin * 2;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      let heightLeft = imgHeight;
-      let position = margin;
-
-      pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight - margin * 2;
-
-      while (heightLeft > 0) {
-        position = -(imgHeight - heightLeft - margin);
-        pdf.addPage();
-        pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
-        heightLeft -= pdfHeight - margin * 2;
-      }
-
-      const fileName = projectName
-        ? `${projectName}.pdf`
-        : `${projectType?.name || "checklist"}.pdf`;
-      pdf.save(fileName);
-    } finally {
+    setTimeout(() => {
+      window.print();
       document.body.classList.remove("exporting-pdf");
       setIsExporting(false);
-    }
+    }, 300);
   };
 
   return (
