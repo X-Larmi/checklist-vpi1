@@ -197,15 +197,12 @@ const Checklist = () => {
     setCategories((prev) => prev.filter((cat) => cat.id !== categoryId));
   };
 
-  const exportPDF = useCallback(async () => {
+  const exportPDF = async () => {
     if (!contentRef.current || isExporting) return;
     setIsExporting(true);
 
     try {
-      // Add exporting class to hide UI elements and force light colors
       document.body.classList.add("exporting-pdf");
-
-      // Wait for DOM to update
       await new Promise((r) => setTimeout(r, 300));
 
       const element = contentRef.current;
@@ -249,7 +246,7 @@ const Checklist = () => {
       document.body.classList.remove("exporting-pdf");
       setIsExporting(false);
     }
-  }, [isExporting, projectName, projectType]);
+  };
 
   return (
     <div className="min-h-screen bg-background px-4 py-12">
