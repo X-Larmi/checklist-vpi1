@@ -103,7 +103,7 @@ const Checklist = () => {
     { id: generateId(), text: "Alimentation ondulée", completed: false },
     { id: generateId(), text: "Serveur NTP", completed: false },
     { id: generateId(), text: "Supervision Client", completed: false },
-    { id: generateId(), text: "Intervention sur l'infra en prod ?", completed: false },
+    { id: generateId(), text: "Intervention pendant la prod", completed: false },
     { id: generateId(), text: "Version Spanning-Tree", completed: false },
     { id: generateId(), text: "Place disponible dans la baie ?", completed: false },
   ]);
@@ -113,6 +113,7 @@ const Checklist = () => {
   const [snmpCommunity, setSnmpCommunity] = useState("");
   const [snmpAccess, setSnmpAccess] = useState<"RO" | "RW" | null>(null);
   const [spanningTreeVersion, setSpanningTreeVersion] = useState<string | null>(null);
+  const [interventionProd, setInterventionProd] = useState<"yes" | "no" | null>(null);
 
   if (!projectType) {
     return (
@@ -505,8 +506,17 @@ const Checklist = () => {
               </div>
             </div>
 
+            {/* Intervention pendant la prod - Oui/Non */}
+            <div className="px-5 py-3">
+              <p className="text-sm font-medium text-foreground mb-3">Intervention pendant la prod ?</p>
+              <div className="flex gap-2">
+                <Button variant={interventionProd === "yes" ? "default" : "outline"} size="sm" onClick={() => setInterventionProd("yes")}>Oui</Button>
+                <Button variant={interventionProd === "no" ? "default" : "outline"} size="sm" onClick={() => setInterventionProd("no")}>Non</Button>
+              </div>
+            </div>
+
             {/* Remaining simple checkboxes */}
-            {autresInfos.filter(i => !["Alimentation ondulée", "Serveur NTP", "Supervision Client", "Version Spanning-Tree"].includes(i.text)).map((item) => (
+            {autresInfos.filter(i => !["Alimentation ondulée", "Serveur NTP", "Supervision Client", "Version Spanning-Tree", "Intervention pendant la prod"].includes(i.text)).map((item) => (
               <div key={item.id} className="group px-5 py-3 transition-colors hover:bg-secondary/50">
                 <div className="flex items-center gap-3">
                   <button
