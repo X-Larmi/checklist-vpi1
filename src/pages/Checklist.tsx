@@ -14,14 +14,22 @@ interface ChecklistItem {
   hasInput?: boolean;
   inputValue?: string;
   inputPlaceholder?: string;
+  multipleInputs?: { key: string; placeholder: string }[];
+  inputValues?: Record<string, string>;
 }
 
 const ITEMS_WITH_INPUT: Record<string, string> = {
   "ID pour le MGMT": "Ex: VLAN 10",
   "Adresse IP et Masque": "Ex: 192.168.1.1 / 255.255.255.0",
   "Passerelle": "Ex: 192.168.1.254",
-  "Login / Mot de passe": "Ex: admin / ••••••",
   "Hostname": "Ex: SW-CORE-01",
+};
+
+const ITEMS_WITH_MULTIPLE_INPUTS: Record<string, { key: string; placeholder: string }[]> = {
+  "Login / Mot de passe": [
+    { key: "login", placeholder: "Login" },
+    { key: "password", placeholder: "Mot de passe" },
+  ],
 };
 
 const EXISTING_CONFIG_CATEGORIES: Record<string, { name: string; items: string[] }[]> = {
