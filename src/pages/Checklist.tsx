@@ -118,6 +118,7 @@ const Checklist = () => {
   const [spanningTreeVersion, setSpanningTreeVersion] = useState<string | null>(null);
   const [interventionProd, setInterventionProd] = useState<"yes" | "no" | null>(null);
   const [placeDisponible, setPlaceDisponible] = useState<"yes" | "no" | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   if (!projectType) {
     return (
