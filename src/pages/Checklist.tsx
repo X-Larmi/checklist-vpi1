@@ -48,6 +48,17 @@ const EXISTING_CONFIG_CATEGORIES: Record<string, { name: string; items: string[]
         "Login / Mot de passe",
       ],
     },
+    {
+      name: "Autres informations",
+      items: [
+        "Alimentation ondulée",
+        "Serveur NTP",
+        "Supervision Client",
+        "Intervention sur l'infra en prod ?",
+        "Version Spanning-Tree",
+        "Place disponible dans la baie ?",
+      ],
+    },
   ],
 };
 
