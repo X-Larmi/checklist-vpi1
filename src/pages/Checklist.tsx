@@ -314,7 +314,7 @@ const Checklist = () => {
             <div key={category.id} className="rounded-xl border bg-card overflow-hidden">
               <div className="flex items-center justify-between border-b px-5 py-3.5">
                 <div className="flex items-center gap-2">
-                  <GripVertical className="h-4 w-4 text-muted-foreground/40" />
+                  <GripVertical className="h-4 w-4 text-muted-foreground/40 pdf-hide" />
                   <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
                     {category.name}
                   </h2>
@@ -325,7 +325,7 @@ const Checklist = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                  className="h-7 w-7 text-muted-foreground hover:text-destructive pdf-hide"
                   onClick={() => removeCategory(category.id)}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -359,7 +359,7 @@ const Checklist = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-7 w-7 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive"
+                        className="h-7 w-7 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive pdf-hide"
                         onClick={() => removeItem(category.id, item.id)}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -392,7 +392,7 @@ const Checklist = () => {
                 ))}
               </div>
 
-              <div className="flex items-center gap-2 border-t px-5 py-3">
+              <div className="flex items-center gap-2 border-t px-5 py-3 pdf-hide">
                 <Input
                   placeholder="Ajouter une tâche..."
                   value={newItemText[category.id] || ""}
@@ -465,7 +465,7 @@ const Checklist = () => {
         <div className="mt-6 rounded-xl border bg-card overflow-hidden">
           <div className="border-b px-5 py-3.5">
             <div className="flex items-center gap-2">
-              <GripVertical className="h-4 w-4 text-muted-foreground/40" />
+              <GripVertical className="h-4 w-4 text-muted-foreground/40 pdf-hide" />
               <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
                 Autres informations
               </h2>
@@ -583,7 +583,7 @@ const Checklist = () => {
         </div>
 
         {/* Add Category */}
-        <div className="mt-6 flex items-center gap-3">
+        <div className="mt-6 flex items-center gap-3 pdf-hide">
           <Input
             placeholder="Nouvelle catégorie..."
             value={newCategoryName}
