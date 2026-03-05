@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle } from "lucide-react";
+import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 import { projectTypes } from "@/data/projectTypes";
 import { icons } from "lucide-react";
