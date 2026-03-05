@@ -430,6 +430,8 @@ const Checklist = () => {
               </div>
             ))}
           </div>
+        </div>
+
         {/* Add Category */}
         <div className="mt-6 flex items-center gap-3">
           <Input
