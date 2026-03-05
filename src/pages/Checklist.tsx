@@ -256,7 +256,7 @@ const Checklist = () => {
           <Button
             variant="ghost"
             size="sm"
-            className="mb-4 -ml-2 text-muted-foreground"
+            className="mb-4 -ml-2 text-muted-foreground pdf-hide"
             onClick={() => navigate("/")}
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
