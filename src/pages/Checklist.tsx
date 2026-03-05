@@ -46,7 +46,6 @@ const EXISTING_CONFIG_CATEGORIES: Record<string, { name: string; items: string[]
       name: "Accès & Identification",
       items: [
         "Login / Mot de passe",
-        "Hostname",
       ],
     },
   ],
@@ -68,6 +67,7 @@ const Checklist = () => {
   const projectType = projectTypes.find((t) => t.id === typeId);
 
   const [projectName, setProjectName] = useState("");
+  const [hostname, setHostname] = useState("");
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
 
@@ -199,6 +199,12 @@ const Checklist = () => {
             placeholder="Nom du projet..."
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
+            className="text-lg font-display border-none bg-transparent px-0 placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+          <Input
+            placeholder="Hostname (Ex: SW-CORE-01)"
+            value={hostname}
+            onChange={(e) => setHostname(e.target.value)}
             className="text-lg font-display border-none bg-transparent px-0 placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:ring-offset-0"
           />
         </div>
