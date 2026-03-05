@@ -196,6 +196,36 @@ const Checklist = () => {
     setCategories((prev) => prev.filter((cat) => cat.id !== categoryId));
   };
 
+  const exportPDF = async () => {
+    if (!contentRef.current) return;
+    const canvas = await html2canvas(contentRef.current, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pdfWidth - 20;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 10;
+
+    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight - 20;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight + 10;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight - 20;
+    }
+
+    const fileName = projectName ? `${projectName}.pdf` : `${projectType?.name || "checklist"}.pdf`;
+    pdf.save(fileName);
+  };
+
   return (
     <div className="min-h-screen bg-background px-4 py-12">
       <div className="mx-auto max-w-2xl">
