@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle } from "lucide-react";
+import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 import { projectTypes } from "@/data/projectTypes";
 import { icons } from "lucide-react";
@@ -68,6 +70,7 @@ const Checklist = () => {
 
   const [projectName, setProjectName] = useState("");
   const [hostname, setHostname] = useState("");
+  const contentRef = useRef<HTMLDivElement>(null);
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
 
@@ -193,9 +196,39 @@ const Checklist = () => {
     setCategories((prev) => prev.filter((cat) => cat.id !== categoryId));
   };
 
+  const exportPDF = async () => {
+    if (!contentRef.current) return;
+    const canvas = await html2canvas(contentRef.current, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pdfWidth - 20;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 10;
+
+    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight - 20;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight + 10;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight - 20;
+    }
+
+    const fileName = projectName ? `${projectName}.pdf` : `${projectType?.name || "checklist"}.pdf`;
+    pdf.save(fileName);
+  };
+
   return (
     <div className="min-h-screen bg-background px-4 py-12">
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-2xl" ref={contentRef}>
         {/* Back + Header */}
         <div className="mb-10">
           <Button
@@ -539,6 +572,14 @@ const Checklist = () => {
           <Button onClick={addCategory} className="h-10 shrink-0 rounded-xl gap-1.5">
             <Plus className="h-4 w-4" />
             Ajouter
+          </Button>
+        </div>
+
+        {/* Export PDF */}
+        <div className="mt-8 flex justify-center">
+          <Button onClick={exportPDF} className="gap-2 rounded-xl px-6">
+            <FileDown className="h-4 w-4" />
+            Export PDF
           </Button>
         </div>
       </div>
