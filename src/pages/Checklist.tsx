@@ -201,6 +201,12 @@ const Checklist = () => {
             onChange={(e) => setProjectName(e.target.value)}
             className="text-lg font-display border-none bg-transparent px-0 placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:ring-offset-0"
           />
+          <Input
+            placeholder="Hostname (Ex: SW-CORE-01)"
+            value={hostname}
+            onChange={(e) => setHostname(e.target.value)}
+            className="text-lg font-display border-none bg-transparent px-0 placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
         </div>
 
 
