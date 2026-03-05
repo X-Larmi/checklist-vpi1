@@ -261,7 +261,7 @@ const Checklist = () => {
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     </div>
-                    {item.hasInput && item.completed && (
+                    {item.hasInput && item.completed && !item.multipleInputs && (
                       <div className="mt-2 ml-8">
                         <Input
                           placeholder={item.inputPlaceholder}
@@ -269,6 +269,19 @@ const Checklist = () => {
                           onChange={(e) => updateItemInput(category.id, item.id, e.target.value)}
                           className="h-8 text-sm"
                         />
+                      </div>
+                    )}
+                    {item.multipleInputs && item.completed && (
+                      <div className="mt-2 ml-8 flex gap-2">
+                        {item.multipleInputs.map((input) => (
+                          <Input
+                            key={input.key}
+                            placeholder={input.placeholder}
+                            value={item.inputValues?.[input.key] || ""}
+                            onChange={(e) => updateItemMultiInput(category.id, item.id, input.key, e.target.value)}
+                            className="h-8 text-sm"
+                          />
+                        ))}
                       </div>
                     )}
                   </div>
