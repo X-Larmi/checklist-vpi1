@@ -107,6 +107,11 @@ const Checklist = () => {
     { id: generateId(), text: "Version Spanning-Tree", completed: false },
     { id: generateId(), text: "Place disponible dans la baie ?", completed: false },
   ]);
+  const [alimentationOndulée, setAlimentationOndulée] = useState<"yes" | "no" | null>(null);
+  const [ntpIp, setNtpIp] = useState("");
+  const [snmpVersion, setSnmpVersion] = useState<"v1" | "v2" | "v3" | null>(null);
+  const [snmpCommunity, setSnmpCommunity] = useState("");
+  const [snmpAccess, setSnmpAccess] = useState<"RO" | "RW" | null>(null);
 
   if (!projectType) {
     return (
