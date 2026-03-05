@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle, FileDown } from "lucide-react";
+import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle, FileDown, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import html2canvas from "html2canvas";
