@@ -70,6 +70,7 @@ const Checklist = () => {
 
   const [projectName, setProjectName] = useState("");
   const [hostname, setHostname] = useState("");
+  const contentRef = useRef<HTMLDivElement>(null);
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
 
