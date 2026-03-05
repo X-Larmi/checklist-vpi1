@@ -598,10 +598,10 @@ const Checklist = () => {
         </div>
 
         {/* Export PDF */}
-        <div className="mt-8 flex justify-center">
-          <Button onClick={exportPDF} className="gap-2 rounded-xl px-6">
-            <FileDown className="h-4 w-4" />
-            Export PDF
+        <div className="mt-8 flex justify-center pdf-hide">
+          <Button onClick={exportPDF} disabled={isExporting} className="gap-2 rounded-xl px-6">
+            {isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
+            {isExporting ? "Export en cours..." : "Export PDF"}
           </Button>
         </div>
       </div>
