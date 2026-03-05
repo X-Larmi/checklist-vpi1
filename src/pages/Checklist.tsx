@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle, FileDown } from "lucide-react";
+import { Plus, Trash2, Check, ArrowLeft, GripVertical, AlertTriangle, FileDown, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import html2canvas from "html2canvas";
@@ -118,6 +118,7 @@ const Checklist = () => {
   const [spanningTreeVersion, setSpanningTreeVersion] = useState<string | null>(null);
   const [interventionProd, setInterventionProd] = useState<"yes" | "no" | null>(null);
   const [placeDisponible, setPlaceDisponible] = useState<"yes" | "no" | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   if (!projectType) {
     return (
@@ -197,33 +198,54 @@ const Checklist = () => {
   };
 
   const exportPDF = async () => {
-    if (!contentRef.current) return;
-    const canvas = await html2canvas(contentRef.current, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-    });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pdfWidth - 20;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let position = 10;
+    if (!contentRef.current || isExporting) return;
+    setIsExporting(true);
 
-    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-    heightLeft -= pdfHeight - 20;
+    try {
+      document.body.classList.add("exporting-pdf");
+      await new Promise((r) => setTimeout(r, 300));
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight + 10;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight - 20;
+      const element = contentRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: "#FAF8F5",
+        logging: false,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        scrollX: 0,
+        scrollY: 0,
+      });
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const margin = 8;
+      const imgWidth = pdfWidth - margin * 2;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = margin;
+
+      pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight - margin * 2;
+
+      while (heightLeft > 0) {
+        position = -(imgHeight - heightLeft - margin);
+        pdf.addPage();
+        pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight - margin * 2;
+      }
+
+      const fileName = projectName
+        ? `${projectName}.pdf`
+        : `${projectType?.name || "checklist"}.pdf`;
+      pdf.save(fileName);
+    } finally {
+      document.body.classList.remove("exporting-pdf");
+      setIsExporting(false);
     }
-
-    const fileName = projectName ? `${projectName}.pdf` : `${projectType?.name || "checklist"}.pdf`;
-    pdf.save(fileName);
   };
 
   return (
@@ -234,7 +256,7 @@ const Checklist = () => {
           <Button
             variant="ghost"
             size="sm"
-            className="mb-4 -ml-2 text-muted-foreground"
+            className="mb-4 -ml-2 text-muted-foreground pdf-hide"
             onClick={() => navigate("/")}
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
@@ -292,7 +314,7 @@ const Checklist = () => {
             <div key={category.id} className="rounded-xl border bg-card overflow-hidden">
               <div className="flex items-center justify-between border-b px-5 py-3.5">
                 <div className="flex items-center gap-2">
-                  <GripVertical className="h-4 w-4 text-muted-foreground/40" />
+                  <GripVertical className="h-4 w-4 text-muted-foreground/40 pdf-hide" />
                   <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
                     {category.name}
                   </h2>
@@ -303,7 +325,7 @@ const Checklist = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                  className="h-7 w-7 text-muted-foreground hover:text-destructive pdf-hide"
                   onClick={() => removeCategory(category.id)}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -337,7 +359,7 @@ const Checklist = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-7 w-7 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive"
+                        className="h-7 w-7 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive pdf-hide"
                         onClick={() => removeItem(category.id, item.id)}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -370,7 +392,7 @@ const Checklist = () => {
                 ))}
               </div>
 
-              <div className="flex items-center gap-2 border-t px-5 py-3">
+              <div className="flex items-center gap-2 border-t px-5 py-3 pdf-hide">
                 <Input
                   placeholder="Ajouter une tâche..."
                   value={newItemText[category.id] || ""}
@@ -443,7 +465,7 @@ const Checklist = () => {
         <div className="mt-6 rounded-xl border bg-card overflow-hidden">
           <div className="border-b px-5 py-3.5">
             <div className="flex items-center gap-2">
-              <GripVertical className="h-4 w-4 text-muted-foreground/40" />
+              <GripVertical className="h-4 w-4 text-muted-foreground/40 pdf-hide" />
               <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
                 Autres informations
               </h2>
@@ -561,7 +583,7 @@ const Checklist = () => {
         </div>
 
         {/* Add Category */}
-        <div className="mt-6 flex items-center gap-3">
+        <div className="mt-6 flex items-center gap-3 pdf-hide">
           <Input
             placeholder="Nouvelle catégorie..."
             value={newCategoryName}
@@ -576,10 +598,10 @@ const Checklist = () => {
         </div>
 
         {/* Export PDF */}
-        <div className="mt-8 flex justify-center">
-          <Button onClick={exportPDF} className="gap-2 rounded-xl px-6">
-            <FileDown className="h-4 w-4" />
-            Export PDF
+        <div className="mt-8 flex justify-center pdf-hide">
+          <Button onClick={exportPDF} disabled={isExporting} className="gap-2 rounded-xl px-6">
+            {isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
+            {isExporting ? "Export en cours..." : "Export PDF"}
           </Button>
         </div>
       </div>
