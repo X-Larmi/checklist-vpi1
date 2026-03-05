@@ -195,7 +195,7 @@ const Checklist = () => {
                       </button>
                       <span
                         className={`flex-1 text-sm transition-all ${
-                          item.completed ? "text-muted-foreground line-through" : "text-foreground"
+                          item.completed ? "text-muted-foreground" : "text-foreground"
                         }`}
                       >
                         {item.text}
