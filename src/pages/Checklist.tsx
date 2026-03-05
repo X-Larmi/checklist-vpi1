@@ -197,35 +197,59 @@ const Checklist = () => {
     setCategories((prev) => prev.filter((cat) => cat.id !== categoryId));
   };
 
-  const exportPDF = async () => {
-    if (!contentRef.current) return;
-    const canvas = await html2canvas(contentRef.current, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-    });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pdfWidth - 20;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let position = 10;
+  const exportPDF = useCallback(async () => {
+    if (!contentRef.current || isExporting) return;
+    setIsExporting(true);
 
-    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-    heightLeft -= pdfHeight - 20;
+    try {
+      // Add exporting class to hide UI elements and force light colors
+      document.body.classList.add("exporting-pdf");
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight + 10;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight - 20;
+      // Wait for DOM to update
+      await new Promise((r) => setTimeout(r, 300));
+
+      const element = contentRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: "#FAF8F5",
+        logging: false,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        scrollX: 0,
+        scrollY: 0,
+      });
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const margin = 8;
+      const imgWidth = pdfWidth - margin * 2;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = margin;
+
+      pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight - margin * 2;
+
+      while (heightLeft > 0) {
+        position = -(imgHeight - heightLeft - margin);
+        pdf.addPage();
+        pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight - margin * 2;
+      }
+
+      const fileName = projectName
+        ? `${projectName}.pdf`
+        : `${projectType?.name || "checklist"}.pdf`;
+      pdf.save(fileName);
+    } finally {
+      document.body.classList.remove("exporting-pdf");
+      setIsExporting(false);
     }
-
-    const fileName = projectName ? `${projectName}.pdf` : `${projectType?.name || "checklist"}.pdf`;
-    pdf.save(fileName);
-  };
+  }, [isExporting, projectName, projectType]);
 
   return (
     <div className="min-h-screen bg-background px-4 py-12">
