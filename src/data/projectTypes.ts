@@ -45,15 +45,6 @@ export const projectTypes: ProjectTypeData[] = [
     color: "from-violet-500/20 to-purple-500/20",
     categories: [
       {
-        name: "Étude préalable",
-        items: [
-          "Réaliser le site survey",
-          "Identifier les zones de couverture",
-          "Analyser les interférences",
-          "Définir le nombre de bornes",
-        ],
-      },
-      {
         name: "Conception",
         items: [
           "Choisir le modèle de bornes",
