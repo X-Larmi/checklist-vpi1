@@ -25,7 +25,7 @@ export const projectTypes: ProjectTypeData[] = [
           "ID VLAN d'administration (si cas échéant)",
           "Config port d'accès (les VLANs) / Config ports d'interco",
           
-          "Nommage du switch",
+          "Convention de nommage des switch",
           "Alimentation ondulée ?",
           "Serveur NTP interne ? Sinon ouvrir accès serveur NTP web",
           "Supervision client (config du SNMP)",
