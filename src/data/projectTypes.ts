@@ -27,7 +27,7 @@ export const projectTypes: ProjectTypeData[] = [
           "Alimentation ondulée ?",
           "Serveur NTP interne ? Sinon ouvrir accès serveur NTP web",
           "Supervision client (config du SNMP)",
-          "Si intervention sur l'infra complète, y a-t-il une fenêtre d'intervention prévue ?",
+          "Intervention sur l'infra ?",
           "Bouclage fibre/RJ/Radio existant ? Si oui, version de spanning-tree",
           "Y a-t-il de la place disponible dans la baie ?",
         ],
