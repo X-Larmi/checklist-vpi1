@@ -71,6 +71,7 @@ const Checklist = () => {
   const [projectName, setProjectName] = useState("");
   const [switchIps, setSwitchIps] = useState<string>("");
   const [vlanId, setVlanId] = useState<string>("");
+  const [credentials, setCredentials] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
