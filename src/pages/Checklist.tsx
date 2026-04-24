@@ -69,7 +69,7 @@ const Checklist = () => {
   const projectType = projectTypes.find((t) => t.id === typeId);
 
   const [projectName, setProjectName] = useState("");
-  const [switchIps, setSwitchIps] = useState<string[]>(["", "", ""]);
+  const [switchIps, setSwitchIps] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
@@ -258,42 +258,15 @@ const Checklist = () => {
           </div>
           <div className="px-5 py-4 space-y-3">
             <div>
-              <label className="text-xs text-muted-foreground mb-2 block">IP des Switch</label>
-              <div className="space-y-2">
-                {switchIps.map((ip, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <Input
-                      placeholder={`Ex: 192.168.1.${idx + 1}`}
-                      value={ip}
-                      onChange={(e) =>
-                        setSwitchIps((prev) => prev.map((v, i) => (i === idx ? e.target.value : v)))
-                      }
-                      className="h-9 text-sm"
-                    />
-                    {switchIps.length > 1 && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 shrink-0 text-muted-foreground hover:text-destructive pdf-hide"
-                        onClick={() =>
-                          setSwitchIps((prev) => prev.filter((_, i) => i !== idx))
-                        }
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-3 pdf-hide"
-                onClick={() => setSwitchIps((prev) => [...prev, ""])}
-              >
-                <Plus className="h-4 w-4" />
-                Ajouter un champ
-              </Button>
+              <label className="text-xs text-muted-foreground mb-2 block">
+                Plans d'adressage des IP management des switch
+              </label>
+              <Input
+                placeholder="Ex: 192.168.1.0/24"
+                value={switchIps}
+                onChange={(e) => setSwitchIps(e.target.value)}
+                className="h-9 text-sm"
+              />
             </div>
           </div>
         </div>
