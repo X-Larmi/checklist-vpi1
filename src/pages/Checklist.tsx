@@ -71,6 +71,7 @@ const Checklist = () => {
   const [projectName, setProjectName] = useState("");
   const [switchIps, setSwitchIps] = useState<string>("");
   const [vlanId, setVlanId] = useState<string>("");
+  const [credentials, setCredentials] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
@@ -277,6 +278,17 @@ const Checklist = () => {
                 placeholder="Ex: 10"
                 value={vlanId}
                 onChange={(e) => setVlanId(e.target.value)}
+                className="h-9 text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-2 block">
+                Login / Mot de passe (Si existant)
+              </label>
+              <Input
+                placeholder="Ex: admin / ********"
+                value={credentials}
+                onChange={(e) => setCredentials(e.target.value)}
                 className="h-9 text-sm"
               />
             </div>
