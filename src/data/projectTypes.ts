@@ -24,7 +24,7 @@ export const projectTypes: ProjectTypeData[] = [
           "Récupération de la configuration du/des switch existants",
           "ID VLAN d'administration (si cas échéant)",
           "Config port d'accès (les VLANs) / Config ports d'interco",
-          "Mot de passe d'accès (si existant)",
+          
           "Nommage du switch",
           "Alimentation ondulée ?",
           "Serveur NTP interne ? Sinon ouvrir accès serveur NTP web",
