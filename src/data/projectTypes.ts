@@ -22,7 +22,6 @@ export const projectTypes: ProjectTypeData[] = [
         name: "Checklist technique",
         items: [
           "Récupération de la configuration du/des switch existants",
-          "Adresse IP d'administration du switch",
           "ID VLAN d'administration (si cas échéant)",
           "Config port d'accès (les VLANs) / Config ports d'interco",
           "Mot de passe d'accès (si existant)",
