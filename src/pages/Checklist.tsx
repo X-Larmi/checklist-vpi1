@@ -375,6 +375,16 @@ const Checklist = () => {
                         ))}
                       </div>
                     )}
+                    {item.completed && !item.hasInput && !item.multipleInputs && (
+                      <div className="mt-2 ml-8">
+                        <Input
+                          placeholder="Saisir une information..."
+                          value={item.inputValue || ""}
+                          onChange={(e) => updateItemInput(category.id, item.id, e.target.value)}
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
