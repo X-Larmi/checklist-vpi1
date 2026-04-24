@@ -375,25 +375,43 @@ const Checklist = () => {
                         ))}
                       </div>
                     )}
-                    {item.completed && !item.hasInput && !item.multipleInputs && item.text === "Alimentation ondulée ?" && (
-                      <div className="mt-2 ml-8 flex gap-2">
-                        <Button
-                          variant={item.inputValue === "yes" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => updateItemInput(category.id, item.id, "yes")}
-                        >
-                          Oui
-                        </Button>
-                        <Button
-                          variant={item.inputValue === "no" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => updateItemInput(category.id, item.id, "no")}
-                        >
-                          Non
-                        </Button>
+                    {item.completed && !item.hasInput && !item.multipleInputs && (item.text === "Alimentation ondulée ?" || item.text === "Intervention sur l'infra ?") && (
+                      <div className="mt-2 ml-8 space-y-2">
+                        <div className="flex gap-2">
+                          <Button
+                            variant={item.inputValue === "yes" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => updateItemInput(category.id, item.id, "yes")}
+                          >
+                            Oui
+                          </Button>
+                          <Button
+                            variant={item.inputValue === "no" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => updateItemInput(category.id, item.id, "no")}
+                          >
+                            Non
+                          </Button>
+                        </div>
+                        {item.text === "Intervention sur l'infra ?" && item.inputValue === "yes" && (
+                          <div className="space-y-2">
+                            <Input
+                              placeholder="Plage horaire"
+                              value={item.inputValues?.plageHoraire || ""}
+                              onChange={(e) => updateItemMultiInput(category.id, item.id, "plageHoraire", e.target.value)}
+                              className="h-8 text-sm"
+                            />
+                            <Input
+                              placeholder="Éléments impactés"
+                              value={item.inputValues?.elementsImpactes || ""}
+                              onChange={(e) => updateItemMultiInput(category.id, item.id, "elementsImpactes", e.target.value)}
+                              className="h-8 text-sm"
+                            />
+                          </div>
+                        )}
                       </div>
                     )}
-                    {item.completed && !item.hasInput && !item.multipleInputs && item.text !== "Alimentation ondulée ?" && (
+                    {item.completed && !item.hasInput && !item.multipleInputs && item.text !== "Alimentation ondulée ?" && item.text !== "Intervention sur l'infra ?" && (
                       <div className="mt-2 ml-8">
                         <Input
                           placeholder="Saisir une information..."
