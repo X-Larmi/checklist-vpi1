@@ -22,9 +22,7 @@ export const projectTypes: ProjectTypeData[] = [
         name: "Checklist technique",
         items: [
           "Récupération de la configuration du/des switch existants",
-          "ID VLAN d'administration (si cas échéant)",
           "Config port d'accès (les VLANs) / Config ports d'interco",
-          
           "Convention de nommage des switch",
           "Alimentation ondulée ?",
           "Serveur NTP interne ? Sinon ouvrir accès serveur NTP web",
