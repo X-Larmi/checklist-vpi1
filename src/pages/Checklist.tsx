@@ -273,6 +273,17 @@ const Checklist = () => {
             </div>
             <div>
               <label className="text-xs text-muted-foreground mb-2 block">
+                IP de management
+              </label>
+              <Input
+                placeholder="Ex: 192.168.1.10"
+                value={managementIp}
+                onChange={(e) => setManagementIp(e.target.value)}
+                className="h-9 text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-2 block">
                 ID VLAN (si connu)
               </label>
               <Input
