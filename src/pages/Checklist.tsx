@@ -20,7 +20,8 @@ interface ChecklistItem {
 
 const ITEMS_WITH_INPUT: Record<string, string> = {
   "ID pour le MGMT": "Ex: VLAN 10",
-  "Adresse IP et Masque": "Ex: 192.168.1.1 / 255.255.255.0",
+  "Adressage IP (si changement)": "Ex: 192.168.1.1",
+  "Masque": "Ex: 255.255.255.0 ou /24",
   "Passerelle": "Ex: 192.168.1.254",
   "Hostname": "Ex: SW-CORE-01",
 };
@@ -38,7 +39,8 @@ const EXISTING_CONFIG_CATEGORIES: Record<string, { name: string; items: string[]
       name: "Informations IP",
       items: [
         "ID pour le MGMT",
-        "Adresse IP et Masque",
+        "Adressage IP (si changement)",
+        "Masque",
         "Passerelle",
       ],
     },
