@@ -261,7 +261,7 @@ const Checklist = () => {
           <div className="px-5 py-4 space-y-3">
             <div>
               <label className="text-xs text-muted-foreground mb-2 block">
-                Plans d'adressage des IP management des switch
+                Plans d'adressage des IP management des bornes
               </label>
               <Input
                 placeholder="Ex: 192.168.1.0/24"
