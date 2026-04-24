@@ -375,7 +375,25 @@ const Checklist = () => {
                         ))}
                       </div>
                     )}
-                    {item.completed && !item.hasInput && !item.multipleInputs && (
+                    {item.completed && !item.hasInput && !item.multipleInputs && item.text === "Alimentation ondulée ?" && (
+                      <div className="mt-2 ml-8 flex gap-2">
+                        <Button
+                          variant={item.inputValue === "yes" ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => updateItemInput(category.id, item.id, "yes")}
+                        >
+                          Oui
+                        </Button>
+                        <Button
+                          variant={item.inputValue === "no" ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => updateItemInput(category.id, item.id, "no")}
+                        >
+                          Non
+                        </Button>
+                      </div>
+                    )}
+                    {item.completed && !item.hasInput && !item.multipleInputs && item.text !== "Alimentation ondulée ?" && (
                       <div className="mt-2 ml-8">
                         <Input
                           placeholder="Saisir une information..."
