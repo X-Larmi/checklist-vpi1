@@ -72,6 +72,7 @@ const Checklist = () => {
   const [switchIps, setSwitchIps] = useState<string>("");
   const [vlanId, setVlanId] = useState<string>("");
   const [credentials, setCredentials] = useState<string>("");
+  const [managementIp, setManagementIp] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
   const [categories, setCategories] = useState<ChecklistCategory[]>(() => {
     if (!projectType) return [];
@@ -267,6 +268,17 @@ const Checklist = () => {
                 placeholder="Ex: 192.168.1.0/24"
                 value={switchIps}
                 onChange={(e) => setSwitchIps(e.target.value)}
+                className="h-9 text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-2 block">
+                IP de management
+              </label>
+              <Input
+                placeholder="Ex: 192.168.1.10"
+                value={managementIp}
+                onChange={(e) => setManagementIp(e.target.value)}
                 className="h-9 text-sm"
               />
             </div>
