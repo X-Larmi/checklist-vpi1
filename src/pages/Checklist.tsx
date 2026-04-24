@@ -253,7 +253,7 @@ const Checklist = () => {
         <div className="mb-6 rounded-xl border bg-card overflow-hidden">
           <div className="border-b px-5 py-3.5">
             <h2 className="font-display font-semibold text-sm uppercase tracking-wider">
-              Informations Générales
+              Information Management
             </h2>
           </div>
           <div className="px-5 py-4 space-y-3">
